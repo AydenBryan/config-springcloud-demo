@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: config-client
+  cloud:
+    consul:
+      # consul注册中心的主机
+      host: localhost
+      # consul注册中心的端口号
+      port: 8500
+      discovery:
+        # 是否需要注册
+        register: true
+        # 指定注册的服务名称（默认为应用名）
+        service-name: ${spring.application.name}
+        # 服务端口
+        port: ${server.port}
+        # 是否使用ip地址注册
+        prefer-ip-address: true
+        # 服务请求ip
+        ip-address: ${spring.cloud.client.ip-address}
+        # 设置consul服务的健康检查（默认开启）
+        register-health-check: true
+        # 健康检测的url，如果不配置，健康检测一定失败
+        health-check-path: /actuator/health
+        # 健康检测时间间隔
+        health-check-interval: 10s
+  # 配置RabbitMQ
+  rabbitmq:
+      host: 192.168.19.128
+      port: 5672
+      username: guest
+      password: guest
+
+# 指定Feign客户端所在包
+logging:
+  level:
+    org:
+      aydenbryan:
+        users:
+          # 必须是DEBUG级别
+          clients: debug
+
+# 配置Feign指定服务的日志展示
+feign:
+  client:
+    config:
+      # 被调用服务名
+      products:
+        loggerLevel: full
+  # feign对hystrix支持
+  hystrix:
+    enabled: true
+
+# 暴露所有web端点，包括远程配置文件刷新的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+name: john
